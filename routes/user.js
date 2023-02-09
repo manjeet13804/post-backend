@@ -7,22 +7,33 @@ const bcrypt = require('bcrypt');
 var jwt = require('jsonwebtoken');
 const secret = "BLOGS";
 const cors = require("cors")
+const fs =require("fs")
+// const os = require("os")
+router.use('./uploads', express.static('uploads'));
 router.use(cors({
     origin: "*"
 }))
-
+const multer = require("multer");
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, 'uploads');
+    },
+    filename: function (req, file, cb) {
+      cb(null,Date.now() + "__"+file.originalname)
+    },
+  });
+const upload = multer({ storage: storage });
 router.use(bodyParser.json());
 
 router.post("/signup", body('email').isEmail(),
-    body("password").isLength({ min: 6, max: 16 }),
+    body("password").isLength({ min: 6, max: 16 }),  upload.single('photo'),
     async (req, res) => {
-        console.log(req.body)
         try {
             // Finds the validation errors in this request and wraps them in an object with handy functions
-            const errors = validationResult(req);
-            if (!errors.isEmpty()) {
-                return res.status(400).json({ errors: errors.array() });
-            }
+            // const errors = validationResult(req);
+            // if (!errors.isEmpty()) {
+            //     return res.status(400).json({ errors: errors.array() });
+            // }
 
             const { email, password } = req.body;
             // check whether user is already registered
@@ -43,10 +54,13 @@ router.post("/signup", body('email').isEmail(),
                         message: err.message
                     });
                 }
-
+                console.log(req.body)
                 const user = await User.create({
                     email,
-                    password: hash
+                    password: hash,
+                   image: { 
+                   data: fs.readFileSync("uploads/" + req.file.filename),
+                   contentType: "image/jpeg",}
                 })
                 return res.json({
                     status: "success",

@@ -2,7 +2,6 @@ const express = require("express");
 const mongoose = require('mongoose');
 const bodyParser=require("body-parser")
 const blogsModel =require("./models/blogs")
-// const CommentModel =require("./models/comment")
 mongoose.connect("mongodb://localhost/blogs", () => {
   console.log("successfully connected to db");
 },
@@ -47,19 +46,6 @@ app.get('/api/blog/:id', async (req, res) => {
       })
   }
 })
-// app.get('/api/blogs/comments',async(req,res)=>{
-//   try{
-// const comments = await CommentModel.find()
-// //   res.status(200).json(comments)
-// console.log(comments)
-//   }catch(e){
-//   //   console.log(e.message)
-//   //   res.status(400).json({
-//   //       message: e.message
-//   // })
-// }
-// })
-
 
 app.listen(5000, () => console.log("The server is up at 5000 port"));
 

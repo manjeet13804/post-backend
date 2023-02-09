@@ -3,7 +3,6 @@ const bodyParser = require("body-parser");
 const router = express.Router();
 const blogsModel = require('../models/blogs')
 const userModel = require('../models/user')
-// const CommentModel = require('../models/comment')
 var jwt = require('jsonwebtoken');
 secret = "BLOGS"
 const cors = require("cors")
@@ -142,4 +141,19 @@ router.put("/likecomment/:blogid/:commentid", async (req, res) => {
     }
 })
 
+
+router.get("/profile", async (req,res)=>{
+    try{
+
+        const user = await userModel.findOne({email:req.user})
+        res.status(200).json({
+            message:"success",
+           user//Image: user//.image.data
+        })
+    }
+    catch(err){
+        console.log(err)
+    }
+
+})
 module.exports = router
