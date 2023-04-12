@@ -148,7 +148,7 @@ router.get("/profile", async (req,res)=>{
         const user = await userModel.findOne({email:req.user})
         res.status(200).json({
             message:"success",
-           user//Image: user//.image.data
+         image:  user.image.data
         })
     }
     catch(err){
