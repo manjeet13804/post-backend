@@ -2,7 +2,7 @@ const express = require("express");
 const mongoose = require('mongoose');
 const bodyParser=require("body-parser")
 const blogsModel =require("./models/blogs")
-mongoose.connect("mongodb://localhost/blogs", () => {
+mongoose.connect("mongodb+srv://root:10xacademy@cluster0.kzvn5vw.mongodb.net/?retryWrites=true&w=majority", () => {
   console.log("successfully connected to db");
 },
   (err) => {
